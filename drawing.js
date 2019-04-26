@@ -1,5 +1,7 @@
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
+context.canvas.width = window.innerWidth;
+context.canvas.height = window.innerHeight;
 
 // Enumerator for the pen's drawing state
 const PEN_STATE = Object.freeze({
