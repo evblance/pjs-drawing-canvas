@@ -12,13 +12,22 @@ const PEN_STATE = Object.freeze({
 // We track the pen's drawing state so we know when to let the user draw
 let penState = PEN_STATE.INACTIVE;
 
+const draw = (x, y) => {
+  const radius = 10;
+  const startAngle = 0;
+  const endAngle = 2 * Math.PI;
+  context.fillStyle = 'black';
+  context.beginPath();
+  context.arc(x, y, radius, startAngle, endAngle, true);
+  context.fill();
+};
+
 /**
  * Deactivates the drawing pen.
  * @param {any} event The pointer event.
  */
 const handlePointerUp = (event) => {
   penState = PEN_STATE.INACTIVE;
-  console.log(penState);
 };
 
 /**
@@ -27,7 +36,7 @@ const handlePointerUp = (event) => {
  */
 const handlePointerDown = (event) => {
   penState = PEN_STATE.ACTIVE;
-  console.log(penState);
+  draw(event.clientX, event.clientY);
 };
 
 /**
@@ -36,10 +45,11 @@ const handlePointerDown = (event) => {
  */
 const handlePointerMove = (event) => {
   if (penState === PEN_STATE.ACTIVE) {
-    console.log('drawing!');
+    draw(event.clientX, event.clientY);
   }
 };
 
 canvas.addEventListener('pointerup', handlePointerUp);
 canvas.addEventListener('pointerdown', handlePointerDown);
 canvas.addEventListener('pointermove', handlePointerMove);
+canvas.addEventListener('pointerleave', handlePointerUp);
