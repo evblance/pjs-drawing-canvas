@@ -12,6 +12,11 @@ const PEN_STATE = Object.freeze({
 // We track the pen's drawing state so we know when to let the user draw
 let penState = PEN_STATE.INACTIVE;
 
+/**
+ * Draws on the canvas.
+ * @param {number} x The x coordinate on the canvas.
+ * @param {number} y The y coordinate on the canvas.
+ */
 const draw = (x, y) => {
   const radius = 10;
   const startAngle = 0;
