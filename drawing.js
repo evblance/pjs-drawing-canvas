@@ -9,8 +9,26 @@ const PEN_STATE = Object.freeze({
   INACTIVE: 'INACTIVE'
 });
 
+// Larger values will change the fill colour at a slower rate
+const COLOUR_RATE = 1000;
+
 // We track the pen's drawing state so we know when to let the user draw
 let penState = PEN_STATE.INACTIVE;
+
+// Keep a global timestamp to track of draw start time
+let drawStartTime;
+
+/**
+ * Returns an HTML colour string based on a periodic cycle of time.
+ */
+const getFillStyleFromTime = () => {
+  if (!drawStartTime) {
+    return 'hsl(0deg, 50%, 50%)';
+  }
+  const t = Date.now() - drawStartTime;
+  const colourAngle = 360 * Math.sin(t / COLOUR_RATE);
+  return `hsl(${colourAngle}deg, 50%, 50%)`;
+};
 
 /**
  * Draws on the canvas.
@@ -21,7 +39,7 @@ const draw = (x, y) => {
   const radius = 10;
   const startAngle = 0;
   const endAngle = 2 * Math.PI;
-  context.fillStyle = 'black';
+  context.fillStyle = getFillStyleFromTime();
   context.beginPath();
   context.arc(x, y, radius, startAngle, endAngle, true);
   context.fill();
@@ -41,6 +59,7 @@ const handlePointerUp = (event) => {
  */
 const handlePointerDown = (event) => {
   penState = PEN_STATE.ACTIVE;
+  drawStartTime = Date.now();
   draw(event.clientX, event.clientY);
 };
 
